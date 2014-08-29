@@ -3,19 +3,16 @@ class SessionsController < ApplicationController
   def new 
   end 
   
-  
+
   def create
-    
-    user= User.find_by_email(params[:session][:email].downcase)
-    
+    user = User.find_by(email: params[:session][:email].downcase)
     if user && user.authenticate(params[:session][:password])
       sign_in user
-      redirect_to user
-    else 
-      flash[:error].now = "Кате"
+      redirect_back_or user
+    else
+      flash.now[:error] = 'Неверное Мыло или Пасс'
       render 'new'
-    
-  end
+    end
   end
   
  def destroy
